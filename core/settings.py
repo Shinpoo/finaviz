@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'app',  # Enable the inner app 
     'django_extensions',
     'django_filters',
-    'whitenoise.runserver_nostatic'
+    # 'whitenoise.runserver_nostatic'
 ]
 
 MIDDLEWARE = [
@@ -149,8 +149,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 #deploy
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
 
 
