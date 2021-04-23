@@ -264,14 +264,14 @@ def company_info(request, ticker):
     elif date_5y.weekday() == 6:
         date_5y -= timedelta(days=2)
     if date_10y.weekday() == 5:
-        date_10y -= timedelta(days=1)
-    elif date_10y.weekday() == 6:
         date_10y -= timedelta(days=2)
+    elif date_10y.weekday() == 6:
+        date_10y -= timedelta(days=3)
     if date_20y.weekday() == 5:
-        date_20y -= timedelta(days=1)
-    elif date_20y.weekday() == 6:
         date_20y -= timedelta(days=2)
-
+    elif date_20y.weekday() == 6:
+        date_20y -= timedelta(days=3)
+    print(date_10y)
     stockprice_1y = Timeserie.objects.get(company=c, timestamp=date_1y).close
     context["dividendpayout_growth_1y"] = (dividend_yield[-1] - dividend_yield[-2])/dividend_yield[-1]
     context["dividendpayout_annualizedgrowth_1y"] = (1 + context["dividendpayout_growth_1y"])**(1/1) - 1
