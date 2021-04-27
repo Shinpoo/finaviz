@@ -82,17 +82,30 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME'  : 'db.sqlite3',
 #     }
+# # }
+# #postgresql
+# DATABASES = {
+#     'default': {
+#         # 'ENGINE': 'django.db.backends.sqlite3',
+#         # 'NAME'  : 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'investdb',
+#         'USER': 'echkin',
+#         'PASSWORD': 'Chaosrain123-',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
 # }
-#postgresql
+
 DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME'  : 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'investdb',
+        'NAME': 'finaviz_db', #check pgadmin
         'USER': 'echkin',
         'PASSWORD': 'Chaosrain123-',
-        'HOST': 'localhost',
+        'HOST': 'database-1.caivapzwfqye.us-east-2.rds.amazonaws.com',
         'PORT': '5432',
     }
 }
