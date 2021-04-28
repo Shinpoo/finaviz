@@ -13,6 +13,10 @@ class CompanyManager:
         self.company = None # ticker object from yfinance
         self.c = None
 
+    def get_company(self):
+        self.c = Company.objects.get(symbol=self.ticker)
+        return self.c
+        
     def get_or_create_or_update_company_info(self):
         # Company info
         try:
@@ -74,7 +78,7 @@ class CompanyManager:
             self.c.save()
         return self.c
 
-        # Timeseries
+        # Timeseries        
     def create_or_update_timeseries(self):
         samples = []
         change_flag = True
@@ -110,11 +114,12 @@ class CompanyManager:
        
         if change_flag:
             for t in timeseries.index: # Sometimes several row at the same date => check if iterable andd take only the first
+                print(self.c, t)
                 if Timeserie.objects.filter(company=self.c, timestamp=t).exists():
                     pass
                 else:
                     if isinstance(timeseries.Dividends[t], Iterable):
-                        samples.append(Timeserie(timestamp=t, close=timeseries.Close[t], dividends=float(timeseries.Dividends[t][0]), company=self.c))
+                        samples.append(Timeserie(timestamp=t, close=timeseries.Close[t][0], dividends=float(timeseries.Dividends[t][0]), company=self.c))
                     else:
                         samples.append(Timeserie(timestamp=t, close=timeseries.Close[t], dividends=float(timeseries.Dividends[t]), company=self.c))
             Timeserie.objects.bulk_create(samples)

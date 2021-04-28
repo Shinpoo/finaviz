@@ -142,9 +142,10 @@ def company_info(request, ticker):
     # print(bugged_tickers)
     # print("ho")
     manager = CompanyManager(ticker)
-    manager.get_or_create_or_update_company_info()
-    manager.create_or_update_timeseries()
-    manager.create_or_update_yearly_financials()
+    manager.get_company()
+    # manager.get_or_create_or_update_company_info()
+    # manager.create_or_update_timeseries()
+    # manager.create_or_update_yearly_financials()
     dividend_yield_date, dividend_yield = manager.get_yearly_dividends()
     c = manager.c
     context = {}
