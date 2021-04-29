@@ -143,6 +143,8 @@ def company_info(request, ticker):
     # print("ho")
     manager = CompanyManager(ticker)
     manager.get_company()
+    manager.get_timeserie()
+    manager.get_financials()
     # manager.get_or_create_or_update_company_info()
     # manager.create_or_update_timeseries()
     # manager.create_or_update_yearly_financials()
@@ -175,10 +177,10 @@ def company_info(request, ticker):
     # ts_1y = Timeserie.objects.filter(company=c).order_by('-timestamp')[:31*6][::-1]
     # ts_5y = Timeserie.objects.filter(company=c).order_by('-timestamp')[:12*31*6][::-1]
     # ts_max = Timeserie.objects.filter(company=c).order_by('timestamp')
-    ts_1mo = Timeserie.objects.filter(company=c, timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(months=1)).order_by('timestamp')
-    ts_1y = Timeserie.objects.filter(company=c, timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=1)).order_by('timestamp')
-    ts_5y = Timeserie.objects.filter(company=c, timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=5)).order_by('timestamp')
-    ts_max = Timeserie.objects.filter(company=c).order_by('timestamp')
+    ts_1mo = manager.timeserie.filter(timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(months=1)).order_by('timestamp')
+    ts_1y = manager.timeserie.filter(timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=1)).order_by('timestamp')
+    ts_5y = manager.timeserie.filter(timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=5)).order_by('timestamp')
+    ts_max = manager.timeserie.order_by('timestamp')
     timestamp_1mo = [t.timestamp.strftime("%d-%b") for t in ts_1mo]
     timestamp_1y = [t.timestamp.strftime("%b %Y") for t in ts_1y]
     timestamp_5y = [t.timestamp.strftime("%b %Y") for t in ts_5y]
@@ -200,14 +202,14 @@ def company_info(request, ticker):
     context["dividendyield_x_10y"] = json.dumps(dividend_yield_date[-10:])
     context["dividendyield_y_max"] = json.dumps(dividend_yield)
     context["dividendyield_x_max"] = json.dumps(dividend_yield_date)
-    yearly_financials = YearlyFinancials.objects.filter(company=c).order_by('timestamp')
+    yearly_financials = manager.financials.order_by('timestamp')
     yearly_financials_timestamp = [yfin.timestamp.strftime("%Y") for yfin in yearly_financials]
     net_income = [yfin.net_income for yfin in yearly_financials]
     total_revenue = [yfin.total_revenue for yfin in yearly_financials]
     total_dividends = [yfin.total_dividends for yfin in yearly_financials]
-    ts_1y = Timeserie.objects.filter(company=c, timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=1)).order_by('timestamp')
-    ts_5y = Timeserie.objects.filter(company=c, timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=5)).order_by('timestamp')
-    ts_max = Timeserie.objects.filter(company=c).order_by('timestamp')
+    ts_1y =  manager.timeserie.filter(timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=1)).order_by('timestamp')
+    ts_5y =  manager.timeserie.filter(timestamp__gte=datetime.now() - dateutil.relativedelta.relativedelta(years=5)).order_by('timestamp')
+    ts_max = manager.timeserie.order_by('timestamp')
     context["differenceFromLastClose"] = context["market_price"] -  context["previous_close"]
     context["differenceRelative"] = 100 * (context["market_price"] - context["previous_close"]) / context["previous_close"]
 
@@ -272,27 +274,61 @@ def company_info(request, ticker):
         date_20y -= timedelta(days=2)
     elif date_20y.weekday() == 6:
         date_20y -= timedelta(days=3)
-    print(date_10y)
-    stockprice_1y = Timeserie.objects.get(company=c, timestamp=date_1y).close
-    context["dividendpayout_growth_1y"] = (dividend_yield[-1] - dividend_yield[-2])/dividend_yield[-1]
-    context["dividendpayout_annualizedgrowth_1y"] = (1 + context["dividendpayout_growth_1y"])**(1/1) - 1
-    context["stockprice_growth_1y"] = (c.market_price - stockprice_1y)/stockprice_1y
-    context["stockprice_annualizedgrowth_1y"] = (1 + context["stockprice_growth_1y"])**(1/1) - 1
 
-    stockprice_5y = Timeserie.objects.get(company=c, timestamp=date_5y).close
-    context["dividendpayout_growth_5y"] = (dividend_yield[-1] - dividend_yield[-6])/dividend_yield[-1]
-    context["dividendpayout_annualizedgrowth_5y"] = (1 + context["dividendpayout_growth_5y"])**(1/5) - 1
-    context["stockprice_growth_5y"] = (c.market_price - stockprice_5y)/stockprice_5y
-    context["stockprice_annualizedgrowth_5y"] = (1 + context["stockprice_growth_5y"])**(1/5) - 1
+    # stockprice_1y = Timeserie.objects.get(company=c, timestamp=date_1y).close
+    # context["dividendpayout_growth_1y"] = (dividend_yield[-1] - dividend_yield[-2])/dividend_yield[-1]
+    # context["dividendpayout_annualizedgrowth_1y"] = (1 + context["dividendpayout_growth_1y"])**(1/1) - 1
+    # context["stockprice_growth_1y"] = (c.market_price - stockprice_1y)/stockprice_1y
+    # context["stockprice_annualizedgrowth_1y"] = (1 + context["stockprice_growth_1y"])**(1/1) - 1
 
-    stockprice_10y = Timeserie.objects.get(company=c, timestamp=date_10y).close
-    context["dividendpayout_growth_10y"] = (dividend_yield[-1] - dividend_yield[-11])/dividend_yield[-1]
-    context["dividendpayout_annualizedgrowth_10y"] = (1 + context["dividendpayout_growth_10y"])**(1/10) - 1
-    context["stockprice_growth_10y"] = (c.market_price - stockprice_10y)/stockprice_10y
-    context["stockprice_annualizedgrowth_10y"] = (1 + context["stockprice_growth_10y"])**(1/10) - 1
-    
+    # stockprice_5y = Timeserie.objects.get(company=c, timestamp=date_5y).close
+    # context["dividendpayout_growth_5y"] = (dividend_yield[-1] - dividend_yield[-6])/dividend_yield[-1]
+    # context["dividendpayout_annualizedgrowth_5y"] = (1 + context["dividendpayout_growth_5y"])**(1/5) - 1
+    # context["stockprice_growth_5y"] = (c.market_price - stockprice_5y)/stockprice_5y
+    # context["stockprice_annualizedgrowth_5y"] = (1 + context["stockprice_growth_5y"])**(1/5) - 1
+
+    # stockprice_10y = Timeserie.objects.get(company=c, timestamp=date_10y).close
+    # context["dividendpayout_growth_10y"] = (dividend_yield[-1] - dividend_yield[-11])/dividend_yield[-1]
+    # context["dividendpayout_annualizedgrowth_10y"] = (1 + context["dividendpayout_growth_10y"])**(1/10) - 1
+    # context["stockprice_growth_10y"] = (c.market_price - stockprice_10y)/stockprice_10y
+    # context["stockprice_annualizedgrowth_10y"] = (1 + context["stockprice_growth_10y"])**(1/10) - 1
     try:
-        stockprice_20y = Timeserie.objects.get(company=c, timestamp=date_20y).close
+        stockprice_1y = manager.timeserie.get(timestamp=date_1y).close
+        context["dividendpayout_growth_1y"] = (dividend_yield[-1] - dividend_yield[-2])/dividend_yield[-1]
+        context["dividendpayout_annualizedgrowth_1y"] = (1 + context["dividendpayout_growth_1y"])**(1/1) - 1
+        context["stockprice_growth_1y"] = (c.market_price - stockprice_1y)/stockprice_1y
+        context["stockprice_annualizedgrowth_1y"] = (1 + context["stockprice_growth_1y"])**(1/1) - 1
+    except:
+        context["dividendpayout_growth_1y"] = None
+        context["dividendpayout_annualizedgrowth_1y"] = None
+        context["stockprice_growth_1y"] = None
+        context["stockprice_annualizedgrowth_1y"] =None
+
+    try:
+        stockprice_5y = manager.timeserie.get(timestamp=date_5y).close
+        context["dividendpayout_growth_5y"] = (dividend_yield[-1] - dividend_yield[-6])/dividend_yield[-1]
+        context["dividendpayout_annualizedgrowth_5y"] = (1 + context["dividendpayout_growth_5y"])**(1/5) - 1
+        context["stockprice_growth_5y"] = (c.market_price - stockprice_5y)/stockprice_5y
+        context["stockprice_annualizedgrowth_5y"] = (1 + context["stockprice_growth_5y"])**(1/5) - 1
+    except:
+        context["dividendpayout_growth_5y"] = None
+        context["dividendpayout_annualizedgrowth_5y"] = None
+        context["stockprice_growth_5y"] = None
+        context["stockprice_annualizedgrowth_5y"] =None
+
+    try:
+        stockprice_10y = manager.timeserie.get(timestamp=date_10y).close
+        context["dividendpayout_growth_10y"] = (dividend_yield[-1] - dividend_yield[-11])/dividend_yield[-1]
+        context["dividendpayout_annualizedgrowth_10y"] = (1 + context["dividendpayout_growth_10y"])**(1/10) - 1
+        context["stockprice_growth_10y"] = (c.market_price - stockprice_10y)/stockprice_10y
+        context["stockprice_annualizedgrowth_10y"] = (1 + context["stockprice_growth_10y"])**(1/10) - 1
+    except:
+        context["dividendpayout_growth_10y"] = None
+        context["dividendpayout_annualizedgrowth_10y"] = None
+        context["stockprice_growth_10y"] = None
+        context["stockprice_annualizedgrowth_10y"] =None
+    try:
+        stockprice_20y = manager.timeserie.get(timestamp=date_20y).close
         context["dividendpayout_growth_20y"] = (dividend_yield[-1] - dividend_yield[-21])/dividend_yield[-1]
         context["dividendpayout_annualizedgrowth_20y"] = (1 + context["dividendpayout_growth_20y"])**(1/20) - 1
         context["stockprice_growth_20y"] = (c.market_price - stockprice_20y)/stockprice_20y
@@ -303,19 +339,7 @@ def company_info(request, ticker):
         context["stockprice_growth_20y"] = None
         context["stockprice_annualizedgrowth_20y"] =None
     
-    # stockprice_5y = Timeserie.objects.get(company=c, timestamp=(datetime.now() - dateutil.relativedelta.relativedelta(years=5)).date())
-    # stockprice_10y = Timeserie.objects.get(company=c, timestamp=(datetime.now() - dateutil.relativedelta.relativedelta(years=10)).date())
-    
-    
-    
-    
-    
-    
-    
-    
-    # guest_posters = GuestPoster.objects.all()
-    # fields = [field.name for field in GuestPoster._meta.get_fields()]
-    # print(fields)
+    context["last_update"] = c.last_update
     return render(request, "company_info.html", context)
 
 
@@ -337,10 +361,8 @@ def autocompleteModel(request):
         print(q, type(q))
         search_qs = Company.objects.filter(Q(symbol__startswith=q.upper()) | Q(name__startswith=q))
         results = []
-        print(search_qs)
         for r in search_qs:
             results.append(r.symbol +" "+r.name)
-        print(results)
         data = json.dumps(results)
     else:
         data = 'fail'

@@ -115,7 +115,8 @@
                   <th scope="row">
                     <div class="media align-items-center">
                       <a href="{% url 'company_info' ticker=company.symbol %}" class="avatar rounded-circle mr-3">
-                        <img alt="Image placeholder" src="{{company.logo_url}}">
+                        <img src={{company.logo_url}} onerror="this.onerror=null;" style="visibility:hidden;border-radius: 50%;" class="img-responsive" onload="this.style.visibility='visible'" />
+                        {% comment %} <img alt="Image placeholder" src="{{company.logo_url}}" onError="this.onerror=null;this.src='/static/assets/img/brand/favicon.png';"> {% endcomment %}
                       </a>
                       <div class="media-body">
                         <a href="{% url 'company_info' ticker=company.symbol %}">
