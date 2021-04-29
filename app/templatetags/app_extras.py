@@ -10,7 +10,10 @@ def percent(value):
     if value is None:
         return "-"
     else:
-        return round(value*100,2)
+        try:
+            return round(value*100,2)
+        except TypeError: # Annualized return can be negative -> sqrt of negative -> complex number
+            return "-"
 
 def capSize(value):
     if value is None:
