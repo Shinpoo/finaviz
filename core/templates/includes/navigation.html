@@ -264,7 +264,7 @@
 <script src="/static/assets/vendor/js-cookie/js.cookie.js"></script>
 <script src="/static/assets/vendor/jquery.scrollbar/jquery.scrollbar.min.js"></script>
 <script src="/static/assets/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js"></script>
-<script>
+{% comment %} <script>
         $(document).ready(function(){ 
             $("#txtSearch").autocomplete({
                 source: "/ajax_calls/search/",
@@ -276,4 +276,19 @@
                 }
               });
         });
+</script> {% endcomment %}
+<script type="text/javascript">
+   $(document).ready(function() {
+      $( "#txtSearch").autocomplete({
+           source:"/ajax_calls/search/",
+           minLength:1,
+           select: function(event,ui){
+                   GetRedirectPage(ui.item.value.split(' ')[0]);
+            }
+       });
+    });
+    function GetRedirectPage(ticker) {
+          var url_mask = "{% url 'company_info' ticker=12345 %}".replace(/12345/, ticker.toString());
+          window.location.href = url_mask;
+    }
 </script>

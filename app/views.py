@@ -27,7 +27,7 @@ import humanize
 from pprint import pprint
 from app.company_manager import *
 from .filters import CompanyFilter
-
+from django.db.models import Avg
 
 # @login_required(login_url="/login/")
 def index(request):
@@ -150,6 +150,7 @@ def company_info(request, ticker):
     # manager.create_or_update_yearly_financials()
     dividend_yield_date, dividend_yield = manager.get_yearly_dividends()
     c = manager.c
+    sector_aggregation = Company.objects.filter(sector=c.sector).aggregate(Avg('peg_ratio'), Avg('trailing_pe_ratio'))
     context = {}
     context["name"] = c.name
     context["symbol"] = c.symbol,
@@ -164,6 +165,8 @@ def company_info(request, ticker):
     context["previous_close"] = c.previous_close
     context["trailing_pe_ratio"] = c.trailing_pe_ratio
     context["peg_ratio"] = c.peg_ratio
+    context["sector_peg"] = sector_aggregation["peg_ratio__avg"]
+    context["sector_per"] = sector_aggregation["trailing_pe_ratio__avg"]
     context["pb_ratio"] = c.pb_ratio
     context["fifty_two_week_low"] = c.fifty_two_week_low
     context["fifty_two_week_high"] = c.fifty_two_week_high
