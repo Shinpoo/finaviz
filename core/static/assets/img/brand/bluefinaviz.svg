@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="281.467" height="94.339" viewBox="0 0 281.467 94.339">
+  <g id="Group_12" data-name="Group 12" transform="translate(-1025.533 -645)">
+    <g id="Group_11" data-name="Group 11" transform="translate(1025.533 654.797)">
+      <path id="Rectangle_4" data-name="Rectangle 4" d="M10,0H61.069a0,0,0,0,1,0,0V8.175a10,10,0,0,1-10,10H0a0,0,0,0,1,0,0V10A10,10,0,0,1,10,0Z" transform="matrix(-0.766, 0.643, -0.643, -0.766, 58.465, 13.923)" fill="#5e72e4"/>
+      <path id="Rectangle_5" data-name="Rectangle 5" d="M10,0H61.069a0,0,0,0,1,0,0V8.175a10,10,0,0,1-10,10H0a0,0,0,0,1,0,0V10A10,10,0,0,1,10,0Z" transform="matrix(-0.766, 0.643, -0.643, -0.766, 58.572, 45.288)" fill="#5e72e4"/>
+      <rect id="Rectangle_6" data-name="Rectangle 6" width="7.997" height="53.072" transform="matrix(-0.766, 0.643, -0.643, -0.766, 40.578, 65.301)" fill="#fff"/>
+    </g>
+    <text id="finaviz_" data-name="finaviz " transform="translate(1091 719)" fill="#5e72e4" font-size="72" font-family="Dosis-ExtraBold, Dosis" font-weight="800"><tspan x="0" y="0">finaviz </tspan></text>
+  </g>
+</svg>
