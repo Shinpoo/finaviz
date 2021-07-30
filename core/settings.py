@@ -118,8 +118,8 @@ DATABASES = {
 #         'PORT': '5432',
 #     }
 # }
-prod_db  =  dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(prod_db)
+# prod_db  =  dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(prod_db)
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
