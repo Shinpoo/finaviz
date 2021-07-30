@@ -84,18 +84,18 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # # }
 #postgresql
-# DATABASES = {
-#     'default': {
-#         # 'ENGINE': 'django.db.backends.sqlite3',
-#         # 'NAME'  : 'db.sqlite3',
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'investdb',
-#         'USER': 'echkin',
-#         'PASSWORD': 'Chaosrain123-',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
+DATABASES = {
+    'default': {
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME'  : 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'investdb',
+        'USER': 'echkin',
+        'PASSWORD': 'Chaosrain123-',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 
 # DATABASES = {
 #     'default': {
@@ -108,16 +108,16 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'finaviz_db',  # check pgadmin
-        'USER': 'echkin',
-        'PASSWORD': 'Chaosrain123-',
-        'HOST': 'database-1.cxqxaj0ucdvc.eu-central-1.rds.amazonaws.com',
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'finaviz_db',  # check pgadmin
+#         'USER': 'echkin',
+#         'PASSWORD': 'Chaosrain123-',
+#         'HOST': 'database-1.cxqxaj0ucdvc.eu-central-1.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 prod_db  =  dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(prod_db)
 # Password validation
