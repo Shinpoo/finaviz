@@ -91,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'investdb',
         'USER': 'echkin',
-        'PASSWORD': 'Chaosrain123-',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -102,7 +102,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'finaviz_db', #check pgadmin
 #         'USER': 'echkin',
-#         'PASSWORD': 'Chaosrain123-',
+#         'PASSWORD': 'cr123-',
 #         'HOST': 'database-1.caivapzwfqye.us-east-2.rds.amazonaws.com',
 #         'PORT': '5432',
 #     }
@@ -113,7 +113,7 @@ DATABASES = {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'finaviz_db',  # check pgadmin
 #         'USER': 'echkin',
-#         'PASSWORD': 'Chaosrain123-',
+#         'PASSWORD': '',
 #         'HOST': 'database-1.cxqxaj0ucdvc.eu-central-1.rds.amazonaws.com',
 #         'PORT': '5432',
 #     }

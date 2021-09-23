@@ -25,3 +25,6 @@ package-lock.json
 staticfiles/*
 !staticfiles/.gitkeep 
 .vscode/symbols.json
+migratedbcommand.txt
+app/sstickers.csv
+tickers.txt

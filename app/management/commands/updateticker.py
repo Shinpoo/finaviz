@@ -18,25 +18,29 @@ class Command(BaseCommand):
                 raise CommandError('Company "%s" does not exist' % ticker)
 
             manager.load_company()
-            if manager.c.last_update.date() < datetime.today().date():
+            if manager.c.last_update.date() < datetime.today().date():# - timedelta(days=1):
                 manager.update_company()
+                manager.get_timeserie()
+                if manager.timeserie.exists():
+                    manager.update_timeserie()
+                else:
+                    raise CommandError('Timeserie "%s" does not exist' % ticker)
+
+                manager.get_financials()
+                if manager.financials.exists():
+                    try:
+                        manager.update_financials()
+                    except:
+                        raise CommandError('Financials "%s" exists in DB  but could not be loaded from yfinance'%ticker)
+                else:
+                    raise CommandError('Financials "%s" does not exist' % ticker)
+
+                manager.update_streaks()
             else:
                 print("Company info already up to date.")
                 
 
-            manager.get_timeserie()
-            if manager.timeserie.exists():
-                manager.update_timeserie()
-            else:
-                raise CommandError('Timeserie "%s" does not exist' % ticker)
-
-            manager.get_financials()
-            if manager.financials.exists():
-                manager.update_financials()
-            else:
-                raise CommandError('Financials "%s" does not exist' % ticker)
-
-            manager.update_streaks()
+            
 
             self.stdout.write(self.style.SUCCESS(
                 'Successfully updated ticker "%s"' % ticker))
