@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).parent
 CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
+SECRET_KEY = config('SECRET_KEY', default='')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,7 +90,7 @@ DATABASES = {
         # 'NAME'  : 'db.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'investdb',
-        'USER': 'echkin',
+        'USER': '',
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
@@ -101,8 +101,8 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'finaviz_db', #check pgadmin
-#         'USER': 'echkin',
-#         'PASSWORD': 'cr123-',
+#         'USER': '',
+#         'PASSWORD': '',
 #         'HOST': 'database-1.caivapzwfqye.us-east-2.rds.amazonaws.com',
 #         'PORT': '5432',
 #     }
@@ -112,7 +112,7 @@ DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'finaviz_db',  # check pgadmin
-#         'USER': 'echkin',
+#         'USER': '',
 #         'PASSWORD': '',
 #         'HOST': 'database-1.cxqxaj0ucdvc.eu-central-1.rds.amazonaws.com',
 #         'PORT': '5432',
